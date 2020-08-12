@@ -1,0 +1,20 @@
+Package: vacuum
+Type: Package
+Title: Tukey's Vacuum Cleaner
+Version: 0.1.0
+Author: Ron Sielinski
+Maintainer: Ron Sielinski <sielinski@hotmail.com>
+Description: An implementation of John Tukey's FUNOP, FUNOR-FUNOM, and vacuum 
+    cleaner from his paper "The Future of Data Analytics". Combined, these  
+    procedures provide a way to identify, treats, and analyze outliers. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat
+Imports: 
+    ggplot2,
+    tidyr,
+    dplyr
+Depends: 
+    R (>= 2.10)
