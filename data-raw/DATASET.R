@@ -7,8 +7,8 @@ table_2 <-
   read.csv(
     'table_2.csv',
     header = F,
-    row.names = NULL)
-
+    row.names = NULL
+    )
 
 table_8 <-
   read.csv(
