@@ -20,10 +20,8 @@ regression from dual regression), and column effect (deviations of
 column regression from dual regression).
 
 Regression is performed twice: First on the table's original values,
-then on the resulting residuals.
-
-The output is a table of residuals "vacuum cleaned" of likely systemic
-effects.
+then on the resulting residuals. The output is a table of residuals
+"vacuum cleaned" of likely systemic effects.
 }
 \examples{
 vacuum(table_8)

@@ -22,6 +22,8 @@ FUNOP stands for FUll NOrmal Plot.
 The procedure identifies outliers by calculating their slope (\code{z}),
 relative to the vector's median.
 
+a_(i|(n))=\ Gau^(-1)\ \link[=((3i-1))/((3n+1)\\ )]{((3i-1))/((3n+1)\ )}
+
 The procedure ignores values in the middle third of the \emph{ordered}
 vector. The remaining values are all candidates for consideration. The
 slopes of all candidates are calculated, and the median of their slopes
@@ -40,8 +42,8 @@ the median of candidate slopes).
 funop(c(1, 2, 3, 11))
 funop(as_received)
 
-# to return the value of outliers,
-# use the function's output as the index to the vector
+# to return the value of outliers, use the function's
+# output as the index to the original vector
 as_received[funop(as_received)]
 }
 \references{
