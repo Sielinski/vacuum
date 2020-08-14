@@ -22,8 +22,8 @@ This is a helper function for FUNOP, which uses the output of this
 function as the denominator for its slope calculation.
 }
 \examples{
-a_quant(i = 25, n = 42)
-a_quant(21.5, 42)
+a_qnorm(i = 25, n = 42)
+a_qnorm(21.5, 42)
 }
 \references{
 The formula was described by John Tukey in his paper "The

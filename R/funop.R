@@ -44,67 +44,76 @@
 
 funop <- function(x, A = 0, B = 1.5) {
 
-  # (b1)
-  # Let a_i|n be a typical value for the ith ordered observation in
-  # a sample of n from a unit normal distribution.
-  order_map <- order(x)
-  ordered <- sort(x)
-  n <- length(x)
-
-  # (b2)
-  # Let y_1 ≤ y_2 ≤ … ≤ y_n be the ordered values to be examined.
-  # Let y_split be their median (or let y_trimmed be the mean of the y_i
-  # with  (1/3)n < i ≤ (2/3)n).
-  middle_third <- (floor(n / 3) + 1):ceiling(2 * n / 3)
-  outer_thirds <- (1:n)[-middle_third]
-  y_split <- median(ordered)
-  y_trimmed <- mean(ordered[middle_third])
-
-  # (b3)
-  # For i ≤ (1/3)n or > (2/3)n only, let z_i = (y_i – y_split) / a_i|n
-  # (or let z_i = (y_i – y_trimmed) / a_i|n).
-  z <- (ordered[outer_thirds] - y_split) / a_qnorm(outer_thirds, n)
-
-  # (b4)
-  # Let z_split be the median of the z’s thus obtained.
-  z_split <- median(z)
-
-  # (b5)
-  # Give special attention to z’s for which both
-  # |y_i – y_split| ≥ A · z_split and z_i ≥ B · z_split where A and B are
-  # prechosen.
-  # This is the first half (z_i ≥ B · z_split)
-  extreme_B <- B * z_split
-  extreme_index <- outer_thirds[which(z >= extreme_B)]
-  extreme_values <- ordered[extreme_index]
-
-  # (b5*)
-  # Particularly for small n, z_j’s with j more extreme than an i
-  # for which (b5) selects z_i also deserve special attention.
-  extreme_index_high <-
-    extreme_index[extreme_index %in% outer_thirds[outer_thirds > max(middle_third)]]
-
-  extreme_index_low <-
-    extreme_index[extreme_index %in% outer_thirds[outer_thirds < min(middle_third)]]
-
-  if (length(extreme_index_high) > 0) {
-    extreme_index_high <- min(extreme_index_high)
-    B_index <- seq(extreme_index_high, n, 1)
+  if (!is.vector(x) | !is.numeric(x)) {
+    warning('x must be a numeric vector.')
+  } else if (length(A) != 1 | !is.numeric(A)) {
+    warning('A must be a single numeric value.')
+  } else if (length(B) != 1 | !is.numeric(B)) {
+    warning('B must be a single numeric value.')
   } else {
-    B_index <- NULL
+    # (b1)
+    # Let a_i|n be a typical value for the ith ordered observation in
+    # a sample of n from a unit normal distribution.
+    order_map <- order(as.vector(x))
+    ordered <- sort(x)
+    n <- length(x)
+
+    # (b2)
+    # Let y_1 ≤ y_2 ≤ … ≤ y_n be the ordered values to be examined.
+    # Let y_split be their median (or let y_trimmed be the mean of the y_i
+    # with  (1/3)n < i ≤ (2/3)n).
+    middle_third <- (floor(n / 3) + 1):ceiling(2 * n / 3)
+    outer_thirds <- (1:n)[-middle_third]
+    y_split <- median(ordered)
+    y_trimmed <- mean(ordered[middle_third])
+
+    # (b3)
+    # For i ≤ (1/3)n or > (2/3)n only, let z_i = (y_i – y_split) / a_i|n
+    # (or let z_i = (y_i – y_trimmed) / a_i|n).
+    z <- (ordered[outer_thirds] - y_split) / a_qnorm(outer_thirds, n)
+
+    # (b4)
+    # Let z_split be the median of the z’s thus obtained.
+    z_split <- median(z)
+
+    # (b5)
+    # Give special attention to z’s for which both
+    # |y_i – y_split| ≥ A · z_split and z_i ≥ B · z_split where A and B are
+    # prechosen.
+    # This is the first half (z_i ≥ B · z_split)
+    extreme_B <- B * z_split
+    extreme_index <- outer_thirds[which(z >= extreme_B)]
+    extreme_values <- ordered[extreme_index]
+
+    # (b5*)
+    # Particularly for small n, z_j’s with j more extreme than an i
+    # for which (b5) selects z_i also deserve special attention.
+    extreme_index_high <-
+      extreme_index[extreme_index %in% outer_thirds[outer_thirds > max(middle_third)]]
+
+    extreme_index_low <-
+      extreme_index[extreme_index %in% outer_thirds[outer_thirds < min(middle_third)]]
+
+    if (length(extreme_index_high) > 0) {
+      extreme_index_high <- min(extreme_index_high)
+      B_index <- extreme_index_high:n
+    } else {
+      B_index <- NULL
+    }
+
+    if (length(extreme_index_low) > 0) {
+      extreme_index_low <- max(extreme_index_low)
+      B_index <- c(1:extreme_index_low, B_index)
+    }
+
+    # second half of 5a: values outside (y_split ± (A * z_split))
+    extreme_A <- A * z_split
+    A_index <- which(abs(ordered - y_split) >= extreme_A)
+
+    combined_index <- B_index[which(B_index %in% A_index)]
+
+    order_map[combined_index]
+
   }
-
-  if (length(extreme_index_low) > 0) {
-    extreme_index_low <- max(extreme_index_low)
-    B_index <- c(seq(1, extreme_index_low, 1), B_index)
-  }
-
-  # second half of 5a: values outside (y_split ± (A * z_split))
-  extreme_A <- A * z_split
-  A_index <- which(abs(ordered - y_split) >= extreme_A)
-
-  combined_index <- B_index[which(B_index %in% A_index)]
-
-  order_map[combined_index]
 
 }

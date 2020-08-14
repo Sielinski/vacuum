@@ -18,12 +18,16 @@
 #' See section 16, "Modified normal plotting" (p 22),
 #' available at \url{https://www.jstor.org/stable/2237638}.
 #' @examples
-#' a_quant(i = 25, n = 42)
-#' a_quant(21.5, 42)
+#' a_qnorm(i = 25, n = 42)
+#' a_qnorm(21.5, 42)
 #' @export
 
 a_qnorm <- function(i, n) {
-
-  qnorm((3 * i - 1) / (3 * n + 1))
+  if (is.numeric(i) & is.numeric(n)) {
+    qnorm((3 * i - 1) / (3 * n + 1))
+  } else {
+    warning('Both parameters must be numeric.')
+  }
 
 }
+

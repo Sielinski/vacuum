@@ -6,7 +6,7 @@
 \alias{vacuum-package}
 \title{vacuum: Tukey's Vacuum Cleaner}
 \description{
-Vacuum is an implementation of three procedures developed by 
+An implementation of three procedures developed by 
     John Tukey: FUNOP, FUNOR-FUNOM, and vacuum cleaner. Combined, they 
     provide a way to identify, treat, and analyze outliers in two-way 
     (i.e., contingency) tables, as described in Tukey's original paper 

@@ -4,7 +4,7 @@ Title: Tukey's Vacuum Cleaner
 Version: 0.1.0
 Author: Ron Sielinski
 Maintainer: Ron Sielinski <sielinski@hotmail.com>
-Description: Vacuum is an implementation of three procedures developed by 
+Description: An implementation of three procedures developed by 
     John Tukey: FUNOP, FUNOR-FUNOM, and vacuum cleaner. Combined, they 
     provide a way to identify, treat, and analyze outliers in two-way 
     (i.e., contingency) tables, as described in Tukey's original paper 
