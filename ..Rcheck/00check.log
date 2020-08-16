@@ -1,0 +1,249 @@
+* using log directory 'C:/Users/ronsiel.REDMOND/Documents/GitHub/vacuum/..Rcheck'
+* using R version 3.6.2 (2019-12-12)
+* using platform: x86_64-w64-mingw32 (64-bit)
+* using session charset: ISO8859-1
+* checking for file './DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'vacuum' version '0.1.0'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... WARNING
+Found the following executable files:
+  ..Rcheck/vign_test/vacuum/.git/objects/00/1bad23219874dd80bfa1763a10c9e305c25119
+  ..Rcheck/vign_test/vacuum/.git/objects/0e/9a6ec2561f2362fa0a99f2d307993035cdf231
+  ..Rcheck/vign_test/vacuum/.git/objects/0e/ec752616534f156cac398f07bef8cc3f527935
+  ..Rcheck/vign_test/vacuum/.git/objects/0f/a7c4b8817591c2dff2b3997d2566320ac6d9fc
+  ..Rcheck/vign_test/vacuum/.git/objects/11/c6727c049c5e19033f3bf3cc77271b92223cf1
+  ..Rcheck/vign_test/vacuum/.git/objects/16/4aa37c4c442958bb697524e79a5188cc2be78e
+  ..Rcheck/vign_test/vacuum/.git/objects/19/54fe97cc11a27b5393af78b7111ae1553fc4fe
+  ..Rcheck/vign_test/vacuum/.git/objects/22/898d97a5876f614e30c93dcc43f7d7b5008573
+  ..Rcheck/vign_test/vacuum/.git/objects/2b/7c6a226371e2b5f673d42c68f186d72d49078e
+  ..Rcheck/vign_test/vacuum/.git/objects/2c/43330712df479e0c159859b24b567ecaa6fb74
+  ..Rcheck/vign_test/vacuum/.git/objects/2d/d34764baa1a576d3e833168bcbcd558965d1f7
+  ..Rcheck/vign_test/vacuum/.git/objects/2f/c8abbb76c812c1c9d4b7e00f37471ef919ef16
+  ..Rcheck/vign_test/vacuum/.git/objects/39/1889e53be39903fd15ab110a6c2015486317ee
+  ..Rcheck/vign_test/vacuum/.git/objects/39/289533a09372364a4ca65bffb2aa44bedcf2fa
+  ..Rcheck/vign_test/vacuum/.git/objects/3d/831402ce8974103c7aa1b69e9a011f8e5d899a
+  ..Rcheck/vign_test/vacuum/.git/objects/3f/216b3c4ad1d7c4bfb7e78cf672e4d08b0e293f
+  ..Rcheck/vign_test/vacuum/.git/objects/3f/3545cb4000b635dcedd13116fa7e2f4d43b15b
+  ..Rcheck/vign_test/vacuum/.git/objects/45/813350d5517155424e547ac8fe62ac0ad86d0f
+  ..Rcheck/vign_test/vacuum/.git/objects/45/dc70c8b198048ba9b109ddad20738000465807
+  ..Rcheck/vign_test/vacuum/.git/objects/49/7f8bfcfb9d13ad61d14d79963641e9aeab41b0
+  ..Rcheck/vign_test/vacuum/.git/objects/4b/825dc642cb6eb9a060e54bf8d69288fbee4904
+  ..Rcheck/vign_test/vacuum/.git/objects/4d/c9bdfe683100c386dd18945883ce2bdba422d8
+  ..Rcheck/vign_test/vacuum/.git/objects/4e/2c1c546e07f01f57e520d4a20b06f5b0148cd2
+  ..Rcheck/vign_test/vacuum/.git/objects/4f/7e262979b186b4c8a581f4bd09ab2337c97205
+  ..Rcheck/vign_test/vacuum/.git/objects/4f/90d238aa5b507f8844393eb58456a599701e82
+  ..Rcheck/vign_test/vacuum/.git/objects/50/d3ff99ce885c07e42a810076753e9d32662701
+  ..Rcheck/vign_test/vacuum/.git/objects/53/506ee2f40c6ad89b476c3de8f32365b90e137c
+  ..Rcheck/vign_test/vacuum/.git/objects/5a/358019037ddebe972279d92a046a37dc7d265b
+  ..Rcheck/vign_test/vacuum/.git/objects/5b/6a0652566d10360493952aec6d4a4febc77083
+  ..Rcheck/vign_test/vacuum/.git/objects/5f/96839ae70d00d820d19ee79273f181ac2fe027
+  ..Rcheck/vign_test/vacuum/.git/objects/60/b126555e90ed49a17a8a193925a248324bcd2c
+  ..Rcheck/vign_test/vacuum/.git/objects/64/1a62f5cef32ed52e5b6500835a55bdbe7372d1
+  ..Rcheck/vign_test/vacuum/.git/objects/68/c996a5f49d30b608bd1816718fc66903d0525e
+  ..Rcheck/vign_test/vacuum/.git/objects/73/2aa56e1e5577cd645a8b9154c969db444f1e97
+  ..Rcheck/vign_test/vacuum/.git/objects/74/9a6e8235643b0be544a3d22339fa91cbf55943
+  ..Rcheck/vign_test/vacuum/.git/objects/77/62ddb86fa674b6e9a0dd9ec9fbd20e570266b2
+  ..Rcheck/vign_test/vacuum/.git/objects/7a/3bea7009a51436e9035d9e017c6161d22547b2
+  ..Rcheck/vign_test/vacuum/.git/objects/7d/8d0f6430b17f0e0d9511aebd3e2d907930a16d
+  ..Rcheck/vign_test/vacuum/.git/objects/8c/58f8f70797f3b346433928009afd24d594f72f
+  ..Rcheck/vign_test/vacuum/.git/objects/8d/7f719cdb774f83b577f25eab73d696f5091433
+  ..Rcheck/vign_test/vacuum/.git/objects/95/29878d7dff5d0a00f3a52e30be2e983a0c671e
+  ..Rcheck/vign_test/vacuum/.git/objects/98/bf5e05cc4d88c5963966705006df0cc901a64e
+  ..Rcheck/vign_test/vacuum/.git/objects/98/c8769abe60f6dce063def4c28f17dd1b402d82
+  ..Rcheck/vign_test/vacuum/.git/objects/9b/2d09c045bf81616fb70b0aaf59b108e023e597
+  ..Rcheck/vign_test/vacuum/.git/objects/a5/c219d03cd30c821827c9538748613bf439639c
+  ..Rcheck/vign_test/vacuum/.git/objects/a7/93395cc63acb686e00c952d53785207798a627
+  ..Rcheck/vign_test/vacuum/.git/objects/ab/294f33c29cb915197eda6b1609e460c16e0d47
+  ..Rcheck/vign_test/vacuum/.git/objects/ab/5e74a896ed620fb41442abc9262c56b12aebbb
+  ..Rcheck/vign_test/vacuum/.git/objects/ad/296078cc3438dd065679b2495bf6dc7d3807a7
+  ..Rcheck/vign_test/vacuum/.git/objects/b3/0bbdac8206e5bb966f6b8e76cc65fd6f42c204
+  ..Rcheck/vign_test/vacuum/.git/objects/b3/838e252c153322287244819417cd74ffe261a2
+  ..Rcheck/vign_test/vacuum/.git/objects/b3/a4aed3554194d63ad6b2f0d80732b99f390d03
+  ..Rcheck/vign_test/vacuum/.git/objects/b3/a8d618a5c25172eca7678f54643ae75850bd61
+  ..Rcheck/vign_test/vacuum/.git/objects/b4/8c8e2000486a7f197a842a2b18a9a5f9b77a43
+  ..Rcheck/vign_test/vacuum/.git/objects/ba/3c862bf648580f2d316cfc921cb173c9b5ef0f
+  ..Rcheck/vign_test/vacuum/.git/objects/c6/2d079f48e3cd55243790327e4b341dfad42b6b
+  ..Rcheck/vign_test/vacuum/.git/objects/cd/41c7b4bff1971ce899d0a2d893cf65cf809398
+  ..Rcheck/vign_test/vacuum/.git/objects/cd/89262c186770f6571ce3ee4481a33356149eb5
+  ..Rcheck/vign_test/vacuum/.git/objects/d2/6519ae2e48c82aface8267222bf91e1651f5a5
+  ..Rcheck/vign_test/vacuum/.git/objects/d7/5f824ec6278db24891505b14ab3d915514dba7
+  ..Rcheck/vign_test/vacuum/.git/objects/db/8e5712dc343e401e196b0c5f6ccc5ed70cd37a
+  ..Rcheck/vign_test/vacuum/.git/objects/e7/871165996870965737199c2ee7a5cca9972de9
+  ..Rcheck/vign_test/vacuum/.git/objects/e7/9f3d80856576d6db32c9fb05cdbc02b28f4ff8
+  ..Rcheck/vign_test/vacuum/.git/objects/eb/474e16508101142a73cda0ec1b812297293b34
+  ..Rcheck/vign_test/vacuum/.git/objects/ef/08c85b05632242eb26a8cc941487e7b37ef687
+  ..Rcheck/vign_test/vacuum/.git/objects/f0/44d256fa185e4bf0f475ddb64a0e6ac05789f9
+  ..Rcheck/vign_test/vacuum/.git/objects/f1/7da62d390623e662c2061c5a27c4a10c95371b
+  ..Rcheck/vign_test/vacuum/.git/objects/f4/6dc585bec1ec1e5567173d4cef0288b598f29b
+  ..Rcheck/vign_test/vacuum/.git/objects/f5/317d069cb12bdfc8be73bd0795d9b89c24cffc
+  ..Rcheck/vign_test/vacuum/.git/objects/fe/e4f6660797996ce98bd71e8bb0316b9c7917cd
+  .git/objects/00/1bad23219874dd80bfa1763a10c9e305c25119
+  .git/objects/0e/9a6ec2561f2362fa0a99f2d307993035cdf231
+  .git/objects/0e/ec752616534f156cac398f07bef8cc3f527935
+  .git/objects/0f/a7c4b8817591c2dff2b3997d2566320ac6d9fc
+  .git/objects/11/c6727c049c5e19033f3bf3cc77271b92223cf1
+  .git/objects/16/4aa37c4c442958bb697524e79a5188cc2be78e
+  .git/objects/19/54fe97cc11a27b5393af78b7111ae1553fc4fe
+  .git/objects/22/898d97a5876f614e30c93dcc43f7d7b5008573
+  .git/objects/2b/7c6a226371e2b5f673d42c68f186d72d49078e
+  .git/objects/2c/43330712df479e0c159859b24b567ecaa6fb74
+  .git/objects/2d/d34764baa1a576d3e833168bcbcd558965d1f7
+  .git/objects/2f/c8abbb76c812c1c9d4b7e00f37471ef919ef16
+  .git/objects/39/1889e53be39903fd15ab110a6c2015486317ee
+  .git/objects/39/289533a09372364a4ca65bffb2aa44bedcf2fa
+  .git/objects/3d/831402ce8974103c7aa1b69e9a011f8e5d899a
+  .git/objects/3f/216b3c4ad1d7c4bfb7e78cf672e4d08b0e293f
+  .git/objects/3f/3545cb4000b635dcedd13116fa7e2f4d43b15b
+  .git/objects/45/813350d5517155424e547ac8fe62ac0ad86d0f
+  .git/objects/45/dc70c8b198048ba9b109ddad20738000465807
+  .git/objects/49/7f8bfcfb9d13ad61d14d79963641e9aeab41b0
+  .git/objects/4b/825dc642cb6eb9a060e54bf8d69288fbee4904
+  .git/objects/4d/c9bdfe683100c386dd18945883ce2bdba422d8
+  .git/objects/4e/2c1c546e07f01f57e520d4a20b06f5b0148cd2
+  .git/objects/4f/7e262979b186b4c8a581f4bd09ab2337c97205
+  .git/objects/4f/90d238aa5b507f8844393eb58456a599701e82
+  .git/objects/50/d3ff99ce885c07e42a810076753e9d32662701
+  .git/objects/53/506ee2f40c6ad89b476c3de8f32365b90e137c
+  .git/objects/5a/358019037ddebe972279d92a046a37dc7d265b
+  .git/objects/5b/6a0652566d10360493952aec6d4a4febc77083
+  .git/objects/5f/96839ae70d00d820d19ee79273f181ac2fe027
+  .git/objects/60/b126555e90ed49a17a8a193925a248324bcd2c
+  .git/objects/64/1a62f5cef32ed52e5b6500835a55bdbe7372d1
+  .git/objects/68/c996a5f49d30b608bd1816718fc66903d0525e
+  .git/objects/73/2aa56e1e5577cd645a8b9154c969db444f1e97
+  .git/objects/74/9a6e8235643b0be544a3d22339fa91cbf55943
+  .git/objects/77/62ddb86fa674b6e9a0dd9ec9fbd20e570266b2
+  .git/objects/7a/3bea7009a51436e9035d9e017c6161d22547b2
+  .git/objects/7d/8d0f6430b17f0e0d9511aebd3e2d907930a16d
+  .git/objects/8c/58f8f70797f3b346433928009afd24d594f72f
+  .git/objects/8d/7f719cdb774f83b577f25eab73d696f5091433
+  .git/objects/95/29878d7dff5d0a00f3a52e30be2e983a0c671e
+  .git/objects/98/bf5e05cc4d88c5963966705006df0cc901a64e
+  .git/objects/98/c8769abe60f6dce063def4c28f17dd1b402d82
+  .git/objects/9b/2d09c045bf81616fb70b0aaf59b108e023e597
+  .git/objects/a5/c219d03cd30c821827c9538748613bf439639c
+  .git/objects/a7/93395cc63acb686e00c952d53785207798a627
+  .git/objects/ab/294f33c29cb915197eda6b1609e460c16e0d47
+  .git/objects/ab/5e74a896ed620fb41442abc9262c56b12aebbb
+  .git/objects/ad/296078cc3438dd065679b2495bf6dc7d3807a7
+  .git/objects/b3/0bbdac8206e5bb966f6b8e76cc65fd6f42c204
+  .git/objects/b3/838e252c153322287244819417cd74ffe261a2
+  .git/objects/b3/a4aed3554194d63ad6b2f0d80732b99f390d03
+  .git/objects/b3/a8d618a5c25172eca7678f54643ae75850bd61
+  .git/objects/b4/8c8e2000486a7f197a842a2b18a9a5f9b77a43
+  .git/objects/ba/3c862bf648580f2d316cfc921cb173c9b5ef0f
+  .git/objects/c6/2d079f48e3cd55243790327e4b341dfad42b6b
+  .git/objects/cd/41c7b4bff1971ce899d0a2d893cf65cf809398
+  .git/objects/cd/89262c186770f6571ce3ee4481a33356149eb5
+  .git/objects/d2/6519ae2e48c82aface8267222bf91e1651f5a5
+  .git/objects/d7/5f824ec6278db24891505b14ab3d915514dba7
+  .git/objects/db/8e5712dc343e401e196b0c5f6ccc5ed70cd37a
+  .git/objects/e7/871165996870965737199c2ee7a5cca9972de9
+  .git/objects/e7/9f3d80856576d6db32c9fb05cdbc02b28f4ff8
+  .git/objects/eb/474e16508101142a73cda0ec1b812297293b34
+  .git/objects/ef/08c85b05632242eb26a8cc941487e7b37ef687
+  .git/objects/f0/44d256fa185e4bf0f475ddb64a0e6ac05789f9
+  .git/objects/f1/7da62d390623e662c2061c5a27c4a10c95371b
+  .git/objects/f4/6dc585bec1ec1e5567173d4cef0288b598f29b
+  .git/objects/f5/317d069cb12bdfc8be73bd0795d9b89c24cffc
+  .git/objects/fe/e4f6660797996ce98bd71e8bb0316b9c7917cd
+Source packages should not contain undeclared executable files.
+See section 'Package structure' in the 'Writing R Extensions' manual.
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  .RData
+  .Rhistory
+  .gitignore
+  vignettes/.gitignore
+  ..Rcheck
+  ..Rcheck/vign_test/vacuum/.git
+  .Rproj.user
+  .git
+These were most likely included in error. See section 'Package
+structure' in the 'Writing R Extensions' manual.
+* checking for portable file names ... OK
+* checking whether package 'vacuum' can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Checking should be performed on sources prepared by 'R CMD build'.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... WARNING
+Found the following directory with the name of a check directory:
+  ./..Rcheck
+Most likely, these were included erroneously.
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+a_qnorm: no visible global function definition for 'qnorm'
+funop: no visible global function definition for 'median'
+funor_funom: no visible binding for global variable 'j'
+funor_funom: no visible binding for global variable 'k'
+funor_funom: no visible binding for global variable 'change_type'
+funor_funom: no visible binding for global variable 'j_mean'
+funor_funom: no visible binding for global variable 'k_mean'
+funor_funom: no visible binding for global variable 'y'
+funor_funom: no visible global function definition for 'median'
+funor_funom: no visible binding for global variable 'z'
+funor_funom: no visible binding for global variable
+  'interesting_values'
+funor_funom: no visible binding for global variable 'a'
+funor_funom: no visible binding for global variable 'new_x'
+Undefined global functions or variables:
+  a change_type interesting_values j j_mean k k_mean median new_x qnorm
+  y z
+Consider adding
+  importFrom("stats", "median", "qnorm")
+to your NAMESPACE file.
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... WARNING
+Undocumented code objects:
+  'table_1' 'table_2' 'table_8'
+Undocumented data sets:
+  'table_1' 'table_2' 'table_8'
+All user-level objects in a package should have documentation entries.
+See chapter 'Writing R documentation files' in the 'Writing R
+Extensions' manual.
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking files in 'vignettes' ... WARNING
+Files in the 'vignettes' directory but no files in 'inst/doc':
+  'vacuum-vignette.Rmd'
+* checking examples ... OK
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ... OK
+  Running 'testthat.R'
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in 'inst/doc' ... WARNING
+dir.exists(dir) is not TRUE
+Package vignette without corresponding single PDF/HTML:
+   'vacuum-vignette.Rmd'
+
+* checking running R code from vignettes ... NONE
+  'vacuum-vignette.Rmd'using 'UTF-8'... OK
+* checking re-building of vignette outputs ... OK
+* checking PDF version of manual ...

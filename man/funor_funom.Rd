@@ -4,7 +4,7 @@
 \alias{funor_funom}
 \title{Identifies and treats outliers in a two-way table}
 \usage{
-funor_funom(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5, print = FALSE)
+funor_funom(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5)
 }
 \arguments{
 \item{x}{Two-way table to treat for outliers}
@@ -17,8 +17,6 @@ slope}
 \item{A_m}{A for the FUNOM phase (\code{A_m} is usually 0)}
 
 \item{B_m}{B for the FUNOM phase}
-
-\item{print}{Boolean to indicate whether the function should print a chart}
 }
 \value{
 A two-way table of the same size as \code{x}, treated for outliers.
@@ -43,11 +41,10 @@ combined grand, row, and column effects).
 funor_funom(table_2)
 }
 \references{
-The techique was orginally developed by John Tukey and published in
-"The Future of Data Analytics".
-Described in sections 19-20 of Tukey's paper, starting
-with "FUNOR-FUNOM in a two-way table" (pp 24-32), available at
-\url{https://www.jstor.org/stable/2237638}.
+Tukey, John W. “The Future of Data Analysis.”
+\emph{The Annals of Mathematical Statistics},
+\emph{33}(1), 1962, pp 1–67. \emph{JSTOR},
+\url{http://www.jstor.org/stable/2237638}.
 }
 \seealso{
 \code{\link[=funop]{funop()}}

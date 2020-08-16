@@ -38,18 +38,17 @@ the median of candidate slopes).
 \examples{
 # funop returns the index of outliers
 funop(c(1, 2, 3, 11))
-funop(as_received)
+funop(table_1)
 
 # to return the value of outliers, use the function's
 # output as the index to the original vector
-as_received[funop(as_received)]
+table_1[funop(table_1)]
 }
 \references{
-The techique was orginally developed by John Tukey and published in
-"The Future of Data Analytics".
-Described in section 18 of Tukey's paper,
-"FUNOP" (pp 22-24), available at
-\url{https://www.jstor.org/stable/2237638}.
+Tukey, John W. “The Future of Data Analysis.”
+\emph{The Annals of Mathematical Statistics},
+\emph{33}(1), 1962, pp 1–67. \emph{JSTOR},
+\url{http://www.jstor.org/stable/2237638}.
 }
 \seealso{
 \code{\link[=a_qnorm]{a_qnorm()}}

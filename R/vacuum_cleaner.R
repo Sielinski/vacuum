@@ -4,7 +4,7 @@ l2_norm <- function(v) {
 
 #' Returns the residuals of a two-way table after removing systemic effects
 #' @description
-#' To remove systemic effects from values in a contingency table, the
+#' To remove systemic effects from values in a contingency table,
 #' vacuum cleaner uses regression to identify the table's main effect
 #' (dual regression), row effect (deviations of row
 #' regression from dual regression), and column effect (deviations of
@@ -20,23 +20,24 @@ l2_norm <- function(v) {
 #' @seealso
 #' [vacuum::funop()], [vacuum::funor_funom()]
 #' @references
-#' The techique was orginally developed by John Tukey and published in
-#' "The Future of Data Analytics".
-#' Described in sections 38-42 of Tukey's
-#' paper, starting with "The vacuum cleaner" (pp 49-60), available at
-#' \url{https://www.jstor.org/stable/2237638}.
+#' Tukey, John W. "The Future of Data Analysis."
+#' \emph{The Annals of Mathematical Statistics},
+#' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
+#' \url{http://www.jstor.org/stable/2237638}.
 #' @examples
-#' vacuum(table_8)
+#' vacuum_cleaner(table_8)
 #' @export
 
-vacuum <- function(x) {
-  if (!is.data.frame(x) | !is.numeric(x)) {
-    warning('x must be a numeric vector.')
-  } else if (nrow(input_table) < 3 | ncol(input_table) < 3) {
-    warning('x must have at least 3 rows and columns.') # (p 53)
+vacuum_cleaner <- function(x) {
+  x <- as.matrix(x)
+
+  if (!is.matrix(x) | !is.numeric(x)) {
+    warning('argument "x" must be convertable to a numeric matrix')
+  } else if (nrow(x) < 3 | ncol(x) < 3) {
+    warning('argument "x" must have at least 3 rows and columns') # (p 53)
   } else {
 
-    input_table <- as.matrix(x)
+    input_table <- x
 
     r <- nrow(input_table)
     c <- ncol(input_table)
@@ -121,8 +122,8 @@ vacuum <- function(x) {
       #var(coef_r)
       #
       #dat <- output_table %>%
-      #  mutate('row' = row_number()) %>%
-      #  pivot_longer(cols = starts_with('X'),
+      #  dplyr::mutate('row' = dplyr::row_number()) %>%
+      #  tidyr::pivot_longer(cols = starts_with('X'),
       #               names_to = 'col',
       #               values_to = 'value')
       #

@@ -13,10 +13,10 @@
 #' Quantile of \code{i} from a unit-normal distribution
 #' @seealso [vacuum::funop()]
 #' @references
-#' The formula was described by John Tukey in his paper "The
-#' Future of Data Analytics".
-#' See section 16, "Modified normal plotting" (p 22),
-#' available at \url{https://www.jstor.org/stable/2237638}.
+#' Tukey, John W. "The Future of Data Analysis."
+#' \emph{The Annals of Mathematical Statistics},
+#' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
+#' \url{http://www.jstor.org/stable/2237638}.
 #' @examples
 #' a_qnorm(i = 25, n = 42)
 #' a_qnorm(21.5, 42)
@@ -26,7 +26,7 @@ a_qnorm <- function(i, n) {
   if (is.numeric(i) & is.numeric(n)) {
     qnorm((3 * i - 1) / (3 * n + 1))
   } else {
-    warning('Both parameters must be numeric.')
+    warning('arguments "i" and "n" must be numeric')
   }
 
 }

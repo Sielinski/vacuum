@@ -7,7 +7,7 @@
 Vacuum is an implementation in R of three procedures developed by 
 John Tukey: FUNOP, FUNOR-FUNOM, and vacuum cleaner. Combined, they 
 provide a way to identify, treat, and analyze outliers in two-way 
-(i.e., contingency) tables, as described in Tukey's original paper 
+(i.e., contingency) tables, as described in Tukey's landmark paper 
 "The Future of Data Analytics". 
 
 ## Installation

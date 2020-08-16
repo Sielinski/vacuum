@@ -1,0 +1,256 @@
+---
+title: "Vacuum Vignette"
+author: "Ron Sielinski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vacuum-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(vacuum)
+library(ggplot2)
+library(magrittr)
+```
+
+## A tidy implementation of John Tukey's vacuum cleaner 
+
+One of John Tukey’s landmark papers, “The Future of Data Analysis” [1], contains a set of analytical procedures that focus on the analysis of two-way (contingency) tables. **Vacuum** contains an implementation of all three procedures:
+
+* FUNOP (**FU**ll **NO**rmal **P**lot): Identifies outliers within a vector by calculating the slope (*z*) of every element, relative to the vector's median.
+
+* FUNOR-FUNOM (**FU**ll **NO**rmal **R**ejection-**FU**ll **NO**rmal **M**odification): Treats a two-way (contingency) table for outliers by
+isolating residuals from the table's likely systemic effects, which
+are calculated from the table's grand, row, and column means.
+
+* Vacuum cleaner: Removes systemic effects from values in a two-way table, returning a set of residuals that can be used for further examination (e.g., analysis of variance). 
+
+### FUNOP
+The base prodecure is FUNOP, which identifies outliers in a vector. 
+
+Here’s Tukey’s definition of FUNOP:
+
+(b1) Let *a~i|n~* be a typical value for the *i*th ordered observation in a sample of *n* from a unit normal distribution.
+
+(b2) Let *y*~1~ ≤ *y*~2~ ≤ … ≤ *y*~n~ be the ordered values to be examined. Let *y̍* be their median (or let *y̆*, read “y trimmed”, be the mean of the *y~i~* with \frac{1}{3}*n* < *i* ≤ \frac{1}{3}(2*n*).
+
+(b3) For *i* ≤ ⅓*n* or > ⅓(2*n*) only, let *z~i~* = (*y~i~* – *y̍*)/*a~i|n~* (or let *z~i~* = (*y~i~* – *y̆*) /*a~i|n~*).
+
+(b4) Let *z̍* be the median of the *z*’s thus obtained (about \frac{1}{3}(2*n*) in number).
+
+(b5) Give special attention to *z*’s for which both |*y~i~* – *y̍*| ≥ A · *z̍* and *z~i~* ≥ B · *z̍* where A and B are prechosen. 
+
+(b5*) Particularly for small *n*, *z~j~*’s with *j* more extreme than an *i* for which (b5) selects *z~i~* also deserve special attention…  (p 23).
+
+The basic idea is very similar to a Q-Q plot. 
+
+Tukey gives us a sample of 14 data points. On a normal Q-Q plot, if data are normally distributed, they form a straight line. But in the chart below, based upon data from Tukey’s example, we can clearly see that a couple of the points are relatively distant from the straight line. They’re outliers. 
+
+```{r echo=FALSE}
+# Normal Q-Q plot for Tukey's sample data
+data.frame(y = table_1) %>% 
+ggplot(aes(sample = y)) +
+  stat_qq() +
+  stat_qq_line() +
+  #geom_abline(aes(intercept = 0, slope = 1)) +
+  labs(title = 'Normal Q-Q plot of sample data')
+```  
+
+The goal of FUNOP, though, is to eliminate the need for visual inspection by automating interpretation.
+
+The first variable in the FUNOP procedure (*a~i|n~*) simply gives us the theoretical distribution, where *i* is the ordinal position in the range 1..*n* and Gau^-1^ is the quantile function of the normal distribution (i.e., the “Q” in Q-Q plot): 
+
+$$
+a_{i|n}=\ {\rm Gau}^{-1}\left[\frac{\left(3i-1\right)}{\left(3n+1\right)}\right]
+$$
+
+The key innovation of FUNOP is to calculate the slope of each point, relative to the median. 
+  
+If *y̍* is the median of the sample, and we presume that it’s located at the midpoint of the distribution (where *a*(*y*) = 0), then the slope of each point can be calculated as:
+
+$$
+z_i=\frac{y_i - y̍}{a_{i|n}}
+$$
+
+The chart above illustrates how slope of one point (1.2, 454) is calculated, relative to the median (0, 33.5).
+
+$$
+z\ =\ \frac{\Delta y}{\Delta a}\ =\ \frac{\left(454.0-\ 33.5\right)}{\left(1.2-0\right)}=350.4
+$$
+
+Any point that has a slope significantly steeper than the rest of the population is necessarily farther from the straight line. To do this, FUNOP simply compares each slope (*z~i~*) to the median of all *calculated* slopes (*z̍*). 
+
+Note, however, that FUNOP calculates slopes for the top and bottom thirds of the sorted population only, in part because *z~i~* won’t vary much over the inner third, but also because the value of *a~i|n~* for the inner third will be close to 0 and dividing by ≈0 when calculating *z~i~* might lead to instability. 
+
+Significance---what Tukey calls “special attention”---is partially determined by *B*, one of two predetermined values (or hyperparameters). For his example, Tukey recommends a value between 1.5 and 2.0, which means that FUNOP simply checks whether the slope of any point, relative to the midpoint, is 1.5 or 2.0 times larger than the median. 
+
+The other predetermined value is *A*, which is roughly equivalent to the number of standard deviations of *y~i~* from *y̍* and serves as a second criterion for significance. 
+
+The following chart shows how FUNOP works. 
+
+# Chart
+
+Our original values are plotted along the *x*-axis. The points in the green make up the inner third of our sample, and we use them to calculate *y̍*, the median of just those points, indicated by the green vertical line. 
+
+The points not in green make up the outer thirds (i.e., the top and bottom thirds) of our sample, and we use them to calculate *z̍*, the median slope of just those points, indicated by the black horizontal line.
+
+Our first selection criterion is *z~i~* ≥ *B* · *z̍*. In his example, Tukey sets *B* = 1.5, so our threshold of interest is 1.5*z̍*, indicated by the blue horizontal line. We’ll consider any point above that line (the shaded blue region) to “deserve special attention”. We have only one such point, colored red. 
+
+Our second criterion is |*y~i~* – *y̍*| ≥ *A* · *z̍*. In his example, Tukey sets *A* = 0, so our threshold of interest is |*y~i~* – *y̍*| ≥ 0 or (more simply) *y~i~* ≠ *y̍*. Basically, any point not on the green line. Our one point in the shaded blue region isn’t on the green line, so we still have our one point. 
+
+Our final criterion is any *z~j~*’s with *j* more extreme than any *i* selected so far. Basically, that’s any value more extreme than the ones already identified. In this case, we have one value that’s larger (further to the right on the *x*-axis) than our red dot. That point is colored orange, and we add it to our list. 
+
+The two points identified by FUNOP are the same ones that we identified visually in Chart 1. 
+
+```{r}
+# example data from Table 1
+table_1
+
+# indices of the outliers
+funop(table_1)
+
+# value of the outliers
+table_1[funop(table_1)]
+```
+
+### FUNOR-FUNOM
+
+A common reason for identifing outliers is to do something about them, often treating the dataset by trimming or Winsorizing. The former simply removes an equal number of values from upper and lower ends of a sorted dataset. Winsorizing is similar but doesn’t remove values. Instead, it replaces them with the closest original value not affected by the process. 
+
+Tukey’s FUNOR-FUNOM offers an alternate approach. The procedure’s name reflects its purpose: FUNOR-FUNOM uses FUNOP to identify outliers, and then uses separate *rejection* and *modification* procedures to treat them. 
+
+The technique offers a number of innovations. First, unlike trimming and Winsorizing, which affect all the values at the top and bottom ends of a sorted dataset, FUNOR-FUNOM uses FUNOP to *identify* individual outliers to treat. Second, FUNOR-FUNOM leverages statistical properties of the dataset to determine *individual* modifications for those outliers. 
+
+FUNOR-FUNOM is specifically designed to operate on two-way (or contingency) tables. Similar to other techniques that operate on contingency tables, it uses the table’s grand mean (*x~..~*) and the row and column means (*x~j.~* and *x~.k~*, respectively) to calculate expected values for entries in the table. 
+
+The equation below shows how these effects are combined. Because it’s unlikely for expected values to match the table’s actual values exactly, the equation includes a residual term (*y~jk~*) to account for any deviation. 
+
+\left(actualvalue\right)=\left(general\ effect\right)+\left(row\ effect\right)+\left(column\ effect\right)+\left(deviation\right)\bigm\left(actuavalx_{jk}=\left(x_{..}\right)+{(x}_{j.}-x_{..}\right)+\left(x_{.k}-\ x_{..}\right)+\left(y_{jk}\right)\bigm\left(actualvalue\right)=x_{..}+x_{j.}-x_{..}+x_{.k}-x_{..}+y_{jk}\bigm\left(actualvalue\right)=x_{j.}+x_{.k}-x_{..}+y_{jk}
+
+FUNOR-FUNOM is primarily interested in the values that deviate most from their expected values, the ones with the largest residuals. So, to calculate residuals, simply swap the above equation around:
+
+$$
+y_{jk}=x_{jk}-x_{j.}-\ x_{.k}+\ x_{..}\ 
+$$
+
+FUNOR-FUNOM starts by repeatedly applying FUNOP, looking for outlier residuals. When it finds them, it modifies the outlier with the greatest deviation by applying the following modification:
+
+$$
+x_{jk}\rightarrow x_{jk}-{\Delta x}_{jk}
+$$
+
+where
+
+$$
+\Delta x_{jk}=\ z_{jk} \cdot a_{a(n)}\cdot\frac{r\cdot c}{\left(r-1\right)\left(c-1\right)}
+$$
+
+
+
+Recalling the definition of slope (from FUNOP) 
+
+$$
+z_i=\frac{y_i - y̍}{a_{i|n}}
+$$
+the first portion of the Δ*x~jk~* equation reduces to just *y~jk~* – *y̍*, the difference of the residual from the median. The second portion of the equation is a factor, based solely upon table size, meant to compensate for the effect of an outlier on the table’s grand, row, and column means. 
+
+When Δ*x~jk~* is applied to the original value, the *y~jk~* terms cancel out, effectively setting the outlier to its expected value (based upon the combined effects of the contingency table) plus a factor of the median residual (~ *x~j.~* + *x~.k~* + *x~..~* + *y̍*).
+
+FUNOR-FUNOM repeats this same process until it no longer finds values that “deserve special attention.” 
+
+In the final phase, the FUNOM phase, the procedure uses a lower threshold of interest---FUNOP with a lower *A*---to identify a final set of outliers for treatment. The adjustment becomes
+
+$$
+\Delta x_{jk} = (z_{jk} - B_M \cdot z̍)a_{i|n}
+$$
+
+There are a couple of changes here. First, the inclusion of (–*B~M~* · *z̍*) effectively sets the residual of outliers to FUNOP’s threshold of interest, much like the way that Winsorizing sets affected values to the same cut-off threshold. FUNOM, though, sets *only the residual* of affected values to that threshold: The greater part of the value is determined by the combined effects of the grand, row, and column means. 
+
+Second, because we’ve already taken care of the largest outliers (whose adjustment would have a more significant effect on the table’s means), we no longer need the compensating factor. 
+
+The chart below shows the result of applying FUNOR-FUNOM to the data in Table 2 of Tukey’s paper. 
+
+# Image
+ 
+The black dots represent the original values affected by the procedure. The color of their treated values is based upon whether they were determined by the FUNOR or FUNOM portion of the procedure. The grey dots represent values unaffected by the procedure. 
+
+FUNOR handles the largest adjustments, which Tukey accomplishes by setting *A~R~* = 10 and *B~R~* = 1.5 for that portion of the process, and FUNOP handles the finer adjustments by setting *A~M~* = 0 and *B~M~* = 1.5.
+
+Again, because the procedure leverages the statistical properties of the data, each of the resulting adjustments is unique. 
+
+```{r}
+# create a dataset with no outliers
+set.seed(42)
+(dat <- matrix(rnorm(16), nrow = 4))
+
+# indices of the outliers
+cleansed_dat <- funor_funom(dat)
+
+```
+
+### Vacuum cleaner
+
+FUNOR-FUNOM treats the outliers of a contingency table by identifying and minimizing outsized residuals, based upon the grand, row, and column means.
+
+Tukey takes these concepts further with his vacuum cleaner, whose output is a set of residuals, which can be used to better understand sources of variance in the data and enable more informed analysis. 
+
+To isolate residuals, Tukey’s vacuum cleaner uses regression to break down the values from the contingency table into their constituent components (p 51): 
+
+(original values) = (dual regression) 
++ (deviations of row regression from dual regression) 
++ (deviations of column regression from dual regression) 
++ (residuals)
+
+The idea is very similar to the one based upon the grand, row, and column means. In fact, the first stage of the vacuum cleaner produces the same result as subtracting the combined effect of the means from the original values.  
+
+To do this, the vacuum cleaner needs to calculate regression coefficients for each row and column based upon the values in our table (*y~rc~*) and a carrier---or regressor---for both rows (*a~r~*) and columns (*b~c~*). 
+
+Below is the equation used to calculate regression coefficients for columns. 
+
+$$
+\left[y/a\right]_c= \frac{\sum_r{a_ry_{rc}}}{\sum_r a_r^2}
+$$
+
+Conveniently, the equation will give us the mean of a column when we set ar ≡ 1: 
+
+
+$$
+\left[y/a\right]_c = \frac{\sum_r(1 · y_{rc})}{\sum_r1} = \frac{\sum_r{y_{rc}}{n_r}
+$$
+
+where *n~r~* is the number of rows. Effectively, the equation iterates through every row (Σ*~r~*), summing up the individual values *i~n~* the same column (*c*) and dividing by the number of rows, the same as calculating the mean (*y~.c~*).
+
+Note, however, that *a~r~* is a vector. So to set *a~r~* ≡ 1, we need our vector to satisfy this equation:
+
+$$
+\sum_r a_r^2=1
+$$
+
+For a vector of length nr we can simply assign every member the same value:
+
+$$
+\sqrt{\frac{1}{n_r}}
+$$
+Our initial regressors end up being two sets of vectors, one for rows and one for columns, containing either √(1/*n~c~*) for rows or √(1/*n~r~*) for columns. 
+Finally, in the same way that the mean of all row means or the mean of all column means can be used to calculate the grand mean, either the row coefficients or column coefficients can be used to calculate a dual-regression (or “grand”) coefficient: 
+
+\ \frac{\sum_{c}{\left[y/a\right]_cb_c}}{\sum_{c} b_c^2}\ \equiv\ \frac{\sum\sum{a_ry_{rc}b_c}}{\sum\sum{a_r^2b_c^2}}\equiv\frac{\sum_{r}{a_r\left[y/b\right]_r}}{\sum_{r} a_r^2}\ =\ \left[y/ab\right]\ \ \equiv\ \equiv
+
+The reason for calculating all of these coefficients, rather than simply subtracting the grand, row, and column means from our table’s original values, is that Tukey’s vacuum cleaner reuses the coefficients from this stage in the procedure as regressors in the next. (To ensure *a~r~* ≡ 1 and *a~c~* ≡ 1 for the next stage, we normalize both sets of new regressors.) 
+
+The second phase is the real innovation here. It's take an earlier idea of Tukey’s, one degree of freedom for non-additivity, and applies it separately to each row and column. This, Tukey tells us, “…extracts row-by-row regression upon ‘column mean minus grand mean’ and column-by-column regression on ‘row mean minus grand mean’” (p 53). 
+
+### References
+Tukey, John W. "The Future of Data Analysis."
+\emph{The Annals of Mathematical Statistics},
+\emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
+\url{http://www.jstor.org/stable/2237638}.

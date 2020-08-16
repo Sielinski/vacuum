@@ -27,29 +27,30 @@
 #' The indices of outliers in \code{x}
 #' @seealso [vacuum::a_qnorm()]
 #' @references
-#' The techique was orginally developed by John Tukey and published in
-#' "The Future of Data Analytics".
-#' Described in section 18 of Tukey's paper,
-#' "FUNOP" (pp 22-24), available at
-#' \url{https://www.jstor.org/stable/2237638}.
+#' Tukey, John W. "The Future of Data Analysis."
+#' \emph{The Annals of Mathematical Statistics},
+#' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
+#' \url{http://www.jstor.org/stable/2237638}.
 #' @examples
 #' # funop returns the index of outliers
 #' funop(c(1, 2, 3, 11))
-#' funop(as_received)
+#' funop(table_1)
 #'
 #' # to return the value of outliers, use the function's
 #' # output as the index to the original vector
-#' as_received[funop(as_received)]
+#' table_1[funop(table_1)]
 #' @export
 
 funop <- function(x, A = 0, B = 1.5) {
 
   if (!is.vector(x) | !is.numeric(x)) {
-    warning('x must be a numeric vector.')
+    warning('argument "x" must be a numeric vector')
   } else if (length(A) != 1 | !is.numeric(A)) {
-    warning('A must be a single numeric value.')
+    warning('argument "A" must be a single numeric value')
   } else if (length(B) != 1 | !is.numeric(B)) {
-    warning('B must be a single numeric value.')
+    warning('argument "B" must be a single numeric value')
+  } else if (anyNA(c(A, B))) {
+    warning('arguments "A" and "B" must be single numeric values')
   } else {
     # (b1)
     # Let a_i|n be a typical value for the ith ordered observation in

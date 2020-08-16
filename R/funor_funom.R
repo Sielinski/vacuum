@@ -25,33 +25,32 @@
 #' A for the FUNOM phase (\code{A_m} is usually 0)
 #' @param B_m
 #' B for the FUNOM phase
-#' @param print
-#' Boolean to indicate whether the function should print a chart
 #' @return
 #' A two-way table of the same size as \code{x}, treated for outliers.
 #' @seealso [vacuum::funop()]
 #' @references
-#' The techique was orginally developed by John Tukey and published in
-#' "The Future of Data Analytics".
-#' Described in sections 19-20 of Tukey's paper, starting
-#' with "FUNOR-FUNOM in a two-way table" (pp 24-32), available at
-#' \url{https://www.jstor.org/stable/2237638}.
+#' Tukey, John W. "The Future of Data Analysis."
+#' \emph{The Annals of Mathematical Statistics},
+#' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
+#' \url{http://www.jstor.org/stable/2237638}.
 #' @examples
 #' funor_funom(table_2)
 #' @export
-funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5, print = FALSE) {
-    if (!is.vector(x) | !is.numeric(x)) {
-      warning('x must be a numeric vector.')
-    } else if (length(A_r) != 1 | !is.numeric(A_r)) {
-      warning('A_r must be a single numeric value.')
-    } else if (length(B_r) != 1 | !is.numeric(B_r)) {
-      warning('B_r must be a single numeric value.')
-    } else if (length(A_m) != 1 | !is.numeric(A_m)) {
-      warning('A_r must be a single numeric value.')
-    } else if (length(B_m) != 1 | !is.numeric(B_m)) {
-      warning('B_r must be a single numeric value.')
-    } else if (!is.logical(print)) {
-      warning('print must be a logical value (T/F).')
+funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5) {
+
+    x <- as.matrix(x)
+
+    if (!is.matrix(x) | !is.numeric(x)) {
+      warning('argument "x" must be convertable to a numeric matrix')
+    } else if (nrow(x) < 2 | ncol(x) < 2) {
+      # change_factor will divide by zero if r = 1 or c = 1
+      warning('argument "x" must have at least 2 rows and columns')
+    } else if (!is.numeric(c(A_r, B_r, A_m, B_m))) {
+      warning('arguments "A" and "B" must be single numeric values')
+    } else if (length(c(A_r, B_r, A_m, B_m)) != 4) {
+      warning('arguments "A" and "B" must be single numeric values')
+    } else if (anyNA(c(A_r, B_r, A_m, B_m))) {
+      warning('arguments "A" and "B" must be single numeric values')
     } else {
       # Initialize
       A <- A_r
@@ -113,7 +112,7 @@ funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5, print = FALS
         # sort the data
         dat <- dat %>%
           dplyr::arrange(y) %>%
-          dplyr::mutate(i = row_number())
+          dplyr::mutate(i = dplyr::row_number())
 
         dat$middle_third <- ifelse(dat$i %in% middle_third, T, F)
 
@@ -142,23 +141,25 @@ funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5, print = FALS
 
         # (b5*)
         # find actuals as extreme--or greater--than identified extreme_values
-        max_low_x <- dat %>%
-          dplyr::filter(interesting_values) %>%
-          dplyr::filter(x < y_split) %>%
-          dplyr::summarise(max_low_x = max(x)) %>%
-          as.numeric()
+        if (sum(dat$interesting_values > 0)) {
+          max_low_x <- dat %>%
+            dplyr::filter(interesting_values) %>%
+            dplyr::filter(x < y_split) %>%
+            dplyr::summarise(max_low_x = max(x)) %>%
+            as.numeric()
 
-        dat$interesting_values <-
-          ifelse(dat$x <= max_low_x, TRUE, dat$interesting_values)
+          dat$interesting_values <-
+            ifelse(dat$x <= max_low_x, TRUE, dat$interesting_values)
 
-        min_high_x <- dat %>%
-          dplyr::filter(interesting_values) %>%
-          dplyr::filter(x > y_split) %>%
-          dplyr::summarise(min_high_x = min(x)) %>%
-          as.numeric()
+          min_high_x <- dat %>%
+            dplyr::filter(interesting_values) %>%
+            dplyr::filter(x > y_split) %>%
+            dplyr::summarise(min_high_x = min(x)) %>%
+            as.numeric()
 
-        dat$interesting_values <-
-          ifelse(dat$x >= min_high_x, TRUE, dat$interesting_values)
+          dat$interesting_values <-
+            ifelse(dat$x >= min_high_x, TRUE, dat$interesting_values)
+        }
 
         # extreme A
         extreme_A <- A * z_split
@@ -185,25 +186,6 @@ funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5, print = FALS
 
       }
 
-      # Figure 1, p 28
-      if (print) {
-        print(
-          dat %>%
-            dplyr::filter(i <= 65) %>%
-            dplyr::mutate(fives = ifelse(i %% 5 == 0, TRUE, FALSE)) %>%
-            ggplot2::ggplot(ggplot2::aes(x = i)) +
-            ggplot2::geom_point(ggplot2::aes(
-              y = round(z / z_split, 1), color = fives
-            )) +
-            ggplot2::ylim(c(0, 3.5)) +
-            ggplot2::scale_color_manual(
-              name = 'i',
-              labels = c('i not a multiple of 5', 'i multiple of 5'),
-              values = c('grey', 'black')
-            ) +
-            ggplot2::labs(title = 'Values of z after FUNOR (for i <= 65)', y = 'z/z_split')
-        )
-      }
 
       # FUNOM
       # (a5)
