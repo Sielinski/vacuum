@@ -12,10 +12,10 @@ provide a way to identify, treat, and analyze outliers in two-way
 
 ## Installation
 
-You can install the released version of vacuum from [CRAN](https://CRAN.R-project.org) with:
+I'll release this on [CRAN](https://CRAN.R-project.org) once they begin accepting packages again (after their summer hiatus). In the meantime, you can try:
 
 ``` r
-install.packages("vacuum")
+devtools::install_github("sielinski/vacuum")
 ```
 
 ## Example
