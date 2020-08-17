@@ -213,6 +213,7 @@ FUNOR-FUNOM is specifically designed to operate on two-way (or contingency) tabl
 The equation below shows how these effects are combined. Because it’s unlikely for expected values to match the table’s actual values exactly, the equation includes a residual term (*y~jk~*) to account for any deviation. 
 
 $$
+
 \begin{align}
 
 (actual \space value) &= (general \space \mathit{effect}) + (row \space \mathit{effect}) + (column \space \mathit{effect}) + (deviation)\\
@@ -221,6 +222,7 @@ x_{jk} &= (x_{..}) + (x_{j.} - x_{..}) + (x_{.k} - x_{..}) + (y_{jk})\\
 &= x_{j.} + x_{.k} - x_{..} + y_{jk}
 
 \end{align}
+
 $$
 
 FUNOR-FUNOM is primarily interested in the values that deviate most from their expected values, the ones with the largest residuals. So, to calculate residuals, simply swap the above equation around:
