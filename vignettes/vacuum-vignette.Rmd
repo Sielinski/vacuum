@@ -400,5 +400,24 @@ summary(aov_results)
 ```
 
 
+### Data sets and errata
+
+There are three data sets in this package, which Tukey provided, one for each procedure. 
+
+* **Table 1** contains example data for FUNOP (p 24)
+* **Table 2** is a 36 x 15 two-way table and contains example data for FUNOR-FUNOM (p 26)
+* **Table 8** is a 36 x 15 two-way table and contains example data for the vacuum cleaner (p 54). Note that Tukey's published table contains a typo, which has been corrected in this package. (See note below)
+
+ "The Future of Data Analysis" contains a handful of errors that can make a detailed investigation of the paper difficult. Below, I've documented what I found in case anyone wants to dig more deeply themselves:
+
+*	One of Tukey's Gaussian calculations contains an arithmetic error: *a*~4|14~ should be Gau^-1^(11/43) (p 23)
+*	As mentioned, one of the values in Table 8 has an inverted sign: the value in row 23, column 10 should be 0.100, not -0.100 (p 54)
+* The numerator for [y/ab], when based up the row coefficent, should be Σ*~r~* *a~r~*[*y/**b***]*~r~* instead of Σ*~r~* *a~r~*[*y/**a***]*~r~* (p 52)
+*	Tukey swaps two values in when he plugs them into a key regression equation: 0.258 and 0.167 (p 55). The equation should read:
+
+$$
+0.126 - (0.014)(0.167) - (-0.459)(0.258) - (0.921)(0.258)(0.167) \space \doteq \space 0.20
+$$
+
 ### References
 Tukey, John W. "The Future of Data Analysis." *The Annals of Mathematical* Statistics, *33*(1), 1962, pp 1-67. *JSTOR*, <http://www.jstor.org/stable/2237638>.
