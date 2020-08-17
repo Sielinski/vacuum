@@ -47,6 +47,7 @@
 #' @export
 
 funop <- function(x, A = 0, B = 1.5) {
+  special <- orig_order <- y <- i <- middle <- a <- z <- NULL
 
   if (!is.vector(x) | !is.numeric(x)) {
     warning('argument "x" must be a numeric vector')
@@ -89,7 +90,7 @@ funop <- function(x, A = 0, B = 1.5) {
     outer_thirds <- (1:n)[-middle_third]
 
     result$middle[middle_third] <- TRUE
-    y_split <- median(result$y)
+    y_split <- stats::median(result$y)
     y_trimmed <- mean(result$y[middle_third])
 
     # (b3)
@@ -101,7 +102,7 @@ funop <- function(x, A = 0, B = 1.5) {
 
     # (b4)
     # Let z_split be the median of the z’s thus obtained.
-    z_split <- median(result$z[outer_thirds])
+    z_split <- stats::median(result$z[outer_thirds])
 
     # (b5)
     # Give special attention to z’s for which both
@@ -122,9 +123,9 @@ funop <- function(x, A = 0, B = 1.5) {
     # and simply look for values of i larger than the smallest i in the
     # top third (further to the right of our x-axis)
     if (any(result$special[top_third])) {
-      min_i <- result %>%
-        dplyr::filter(special == TRUE) %>%
-        {min(.$i)}
+      min_i <- result[top_third, ] %>%
+        dplyr::filter(special == TRUE)
+      min_i <- min(min_i$i)
 
       result$special[which(result$i > min_i)] <- TRUE
     }
@@ -135,9 +136,10 @@ funop <- function(x, A = 0, B = 1.5) {
     # look for values of i smaller than the largest i in the bottom third
     # (further to the left of our x-axis)
     if (any(result$special[bottom_third])) {
-      max_i <- result %>%
-        dplyr::filter(special == TRUE) %>%
-        {.$max_i}
+      max_i <- result[bottom_third, ] %>%
+        dplyr::filter(special == TRUE)
+      max_i <- max(max_i$i)
+
 
       result$special[which(result$i < max_i)] <- TRUE
     }

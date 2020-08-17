@@ -13,8 +13,7 @@
 #' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
 #' \url{http://www.jstor.org/stable/2237638}.
 #'
-#' @examples {
+#' @examples
 #' table_1
 #' funop(table_1)
-#' }
 "table_1"

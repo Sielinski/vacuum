@@ -38,6 +38,15 @@
 #' which(funor_funom(table_2) != table_2)
 #' @export
 funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5) {
+  j <-
+    k <-
+    change_type <-
+    j_mean <-
+    k_mean <-
+    y <-
+    special <-
+    i <- middle <- a <- z <- interesting_values <- new_x <- NULL
+
 
   x <- as.matrix(x)
 

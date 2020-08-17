@@ -19,13 +19,11 @@ table_8
 \description{
 Example data taken from Table 8 of John Tukey's
 "Future of Data Analysis." Note that this dataset fixes
-a typo in the original document: table_8\link{23, 10} contains
+a typo in the original document: Column 23, row 10 contains
 0.100, corrected from the original -0.100.
 }
 \examples{
-{
 table_8
 vacuum_cleaner(table_8)
-}
 }
 \keyword{datasets}

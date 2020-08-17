@@ -21,9 +21,7 @@ Example data taken from Table 1 of John Tukey's
 "Future of Data Analysis."
 }
 \examples{
-{
 table_1
 funop(table_1)
-}
 }
 \keyword{datasets}

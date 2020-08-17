@@ -5,7 +5,7 @@
 \alias{table_2}
 \title{Table 2}
 \format{
-An object of class \code{matrix} with 36 rows and 15 columns.
+A 36x15 numeric matrix.
 }
 \source{
 Tukey, John W. "The Future of Data Analysis."
@@ -21,9 +21,7 @@ Example data taken from Table 2 of John Tukey's
 "Future of Data Analysis."
 }
 \examples{
-{
 table_2
 funor_funom(table_2)
-}
 }
 \keyword{datasets}
