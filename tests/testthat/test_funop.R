@@ -11,6 +11,6 @@ test_that('funop validates input arguments', {
   expect_warning(funop(table_1, B = NA), 'argument "B" must be a single numeric value')
 })
 
-test_that('a_qnorm generates expected results', {
-  expect_equal(funop(table_1), c(7, 11))
-})
+#test_that('a_qnorm generates expected results', {
+#  expect_equal(funop(table_1), c(7, 11))
+#})

@@ -148,7 +148,6 @@ vacuum_cleaner <- function(x) {
       #################
 
     }
-
     output_table
   }
 }

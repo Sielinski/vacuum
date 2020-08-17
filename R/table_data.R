@@ -3,6 +3,8 @@
 #' Example data taken from Table 1 of John Tukey's
 #' "Future of Data Analysis."
 #'
+#' @name table_1
+#' @docType data
 #' @format A numeric vector containing 14 elements.
 #'
 #' @source
@@ -22,7 +24,9 @@
 #' Example data taken from Table 2 of John Tukey's
 #' "Future of Data Analysis."
 #'
-#' @format A 36x15 numeric matrix.
+#' @name table_2
+#' @docType data
+#' #' @format A 36x15 numeric matrix.
 #'
 #' @source
 #' Tukey, John W. "The Future of Data Analysis."
@@ -41,6 +45,8 @@
 #' Example data taken from Table 8 of John Tukey's
 #' "Future of Data Analysis."
 #'
+#' @name table_8
+#' @docType data
 #' @format A 36x15 numeric matrix.
 #'
 #' @source

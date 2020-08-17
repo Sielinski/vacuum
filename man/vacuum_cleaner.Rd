@@ -27,9 +27,9 @@ then on the resulting residuals. The output is a table of residuals
 vacuum_cleaner(table_8)
 }
 \references{
-Tukey, John W. “The Future of Data Analysis.”
+Tukey, John W. "The Future of Data Analysis."
 \emph{The Annals of Mathematical Statistics},
-\emph{33}(1), 1962, pp 1–67. \emph{JSTOR},
+\emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
 \url{http://www.jstor.org/stable/2237638}.
 }
 \seealso{

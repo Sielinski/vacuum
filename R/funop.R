@@ -24,7 +24,15 @@
 #' @param B
 #' Multiples beyond the median slope of candidate values
 #' @return
-#' The indices of outliers in \code{x}
+#' A data frame containing one row for every member of \code{x} (in the same
+#' order as \code{x}) and the
+#' following columns:
+#' * \code{y}: Original values of vector \code{x}
+#' * \code{i}: Ordinal position of value \code{y} in the sorted vector \code{x}
+#' * \code{middle}: Boolean indicating whether ordinal position \code{i} is in the middle third of the vector
+#' * \code{a}: Result of \code{a_qnorm(i, length(x))}
+#' * \code{z}: Slope of \code{y} relative to \code{median(y)}
+#' * \code{special}: Boolean indicating whether \code{y} is an outlier
 #' @seealso [vacuum::a_qnorm()]
 #' @references
 #' Tukey, John W. "The Future of Data Analysis."
@@ -32,13 +40,10 @@
 #' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
 #' \url{http://www.jstor.org/stable/2237638}.
 #' @examples
-#' # funop returns the index of outliers
 #' funop(c(1, 2, 3, 11))
 #' funop(table_1)
 #'
-#' # to return the value of outliers, use the function's
-#' # output as the index to the original vector
-#' table_1[funop(table_1)]
+#' attr(funop(table_1), 'z_split')
 #' @export
 
 funop <- function(x, A = 0, B = 1.5) {
@@ -52,12 +57,29 @@ funop <- function(x, A = 0, B = 1.5) {
   } else if (anyNA(c(A, B))) {
     warning('arguments "A" and "B" must be single numeric values')
   } else {
+
     # (b1)
-    # Let a_i|n be a typical value for the ith ordered observation in
+    # Let a_{i|n} be a typical value for the ith ordered observation in
     # a sample of n from a unit normal distribution.
-    order_map <- order(as.vector(x))
-    ordered <- sort(x)
     n <- length(x)
+
+    # initialze dataframe to hold results
+    result <- data.frame(
+      y = x,
+      orig_order = 1:n,
+      a = NA,
+      z = NA,
+      middle = FALSE,
+      special = FALSE
+    )
+
+    # put array in order
+    result <- result %>%
+      dplyr::arrange(x) %>%
+      dplyr::mutate(i = dplyr::row_number())
+
+    # calculate a_{i|n}
+    result$a <- a_qnorm(result$i, n)
 
     # (b2)
     # Let y_1 ≤ y_2 ≤ … ≤ y_n be the ordered values to be examined.
@@ -65,56 +87,69 @@ funop <- function(x, A = 0, B = 1.5) {
     # with  (1/3)n < i ≤ (2/3)n).
     middle_third <- (floor(n / 3) + 1):ceiling(2 * n / 3)
     outer_thirds <- (1:n)[-middle_third]
-    y_split <- median(ordered)
-    y_trimmed <- mean(ordered[middle_third])
+
+    result$middle[middle_third] <- TRUE
+    y_split <- median(result$y)
+    y_trimmed <- mean(result$y[middle_third])
 
     # (b3)
-    # For i ≤ (1/3)n or > (2/3)n only, let z_i = (y_i – y_split) / a_i|n
-    # (or let z_i = (y_i – y_trimmed) / a_i|n).
-    z <- (ordered[outer_thirds] - y_split) / a_qnorm(outer_thirds, n)
+    # For i ≤ (1/3)n or > (2/3)n only,
+    # let z_i = (y_i – y_split) / a_{i|n}
+    # (or let z_i = (y_i – y_trimmed) / a_{i|n}).
+    result$z[outer_thirds] <-
+      (result$y[outer_thirds] - y_split) / result$a[outer_thirds]
 
     # (b4)
     # Let z_split be the median of the z’s thus obtained.
-    z_split <- median(z)
+    z_split <- median(result$z[outer_thirds])
 
     # (b5)
     # Give special attention to z’s for which both
-    # |y_i – y_split| ≥ A · z_split and z_i ≥ B · z_split where A and B are
-    # prechosen.
-    # This is the first half (z_i ≥ B · z_split)
-    extreme_B <- B * z_split
-    extreme_index <- outer_thirds[which(z >= extreme_B)]
-    extreme_values <- ordered[extreme_index]
+    # |y_i – y_split| ≥ A · z_split and z_i ≥ B · z_split
+    # where A and B are prechosen.
+    result$special <-
+      ifelse(result$z >= (B * z_split) &
+               abs(result$y - y_split) >= (A * z_split), TRUE, FALSE)
 
     # (b5*)
     # Particularly for small n, z_j’s with j more extreme than an i
     # for which (b5) selects z_i also deserve special attention.
-    extreme_index_high <-
-      extreme_index[extreme_index %in% outer_thirds[outer_thirds > max(middle_third)]]
 
-    extreme_index_low <-
-      extreme_index[extreme_index %in% outer_thirds[outer_thirds < min(middle_third)]]
+    # in the top third, look for values larger than ones already found
+    top_third <- outer_thirds[outer_thirds > max(middle_third)]
 
-    if (length(extreme_index_high) > 0) {
-      extreme_index_high <- min(extreme_index_high)
-      B_index <- extreme_index_high:n
-    } else {
-      B_index <- NULL
+    # take advantage of the fact that we've already indexed our result set
+    # and simply look for values of i larger than the smallest i in the
+    # top third (further to the right of our x-axis)
+    if (any(result$special[top_third])) {
+      min_i <- result %>%
+        dplyr::filter(special == TRUE) %>%
+        {min(.$i)}
+
+      result$special[which(result$i > min_i)] <- TRUE
     }
 
-    if (length(extreme_index_low) > 0) {
-      extreme_index_low <- max(extreme_index_low)
-      B_index <- c(1:extreme_index_low, B_index)
+    # in the top third, look for values smaller than ones already found
+    bottom_third <- outer_thirds[outer_thirds < min(middle_third)]
+
+    # look for values of i smaller than the largest i in the bottom third
+    # (further to the left of our x-axis)
+    if (any(result$special[bottom_third])) {
+      max_i <- result %>%
+        dplyr::filter(special == TRUE) %>%
+        {.$max_i}
+
+      result$special[which(result$i < max_i)] <- TRUE
     }
 
-    # second half of 5a: values outside (y_split ± (A * z_split))
-    extreme_A <- A * z_split
-    A_index <- which(abs(ordered - y_split) >= extreme_A)
+    result <- result %>%
+      dplyr::arrange(orig_order) %>%
+      dplyr::select(y, i, middle, a, z, special)
 
-    combined_index <- B_index[which(B_index %in% A_index)]
+    attr(result, 'y_split') <- y_split
+    attr(result, 'y_trimmed') <- y_trimmed
+    attr(result, 'z_split') <- z_split
 
-    order_map[combined_index]
-
+    result
   }
-
 }

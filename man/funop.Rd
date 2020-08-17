@@ -14,7 +14,17 @@ funop(x, A = 0, B = 1.5)
 \item{B}{Multiples beyond the median slope of candidate values}
 }
 \value{
-The indices of outliers in \code{x}
+A data frame containing one row for every member of \code{x} (in the same
+order as \code{x}) and the
+following columns:
+\itemize{
+\item \code{y}: Original values of vector \code{x}
+\item \code{i}: Ordinal position of value \code{y} in the sorted vector \code{x}
+\item \code{middle}: Boolean indicating whether ordinal position \code{i} is in the middle third of the vector
+\item \code{a}: Result of \code{a_qnorm(i, length(x))}
+\item \code{z}: Slope of \code{y} relative to \code{median(y)}
+\item \code{special}: Boolean indicating whether \code{y} is an outlier
+}
 }
 \description{
 FUNOP stands for FUll NOrmal Plot.
@@ -36,18 +46,15 @@ within \code{A} standard deviations of the vector's median (i.e., not
 the median of candidate slopes).
 }
 \examples{
-# funop returns the index of outliers
 funop(c(1, 2, 3, 11))
 funop(table_1)
 
-# to return the value of outliers, use the function's
-# output as the index to the original vector
-table_1[funop(table_1)]
+attr(funop(table_1), 'z_split')
 }
 \references{
-Tukey, John W. “The Future of Data Analysis.”
+Tukey, John W. "The Future of Data Analysis."
 \emph{The Annals of Mathematical Statistics},
-\emph{33}(1), 1962, pp 1–67. \emph{JSTOR},
+\emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
 \url{http://www.jstor.org/stable/2237638}.
 }
 \seealso{

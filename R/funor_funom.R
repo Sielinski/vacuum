@@ -35,196 +35,157 @@
 #' \url{http://www.jstor.org/stable/2237638}.
 #' @examples
 #' funor_funom(table_2)
+#' which(funor_funom(table_2) != table_2)
 #' @export
 funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5) {
 
-    x <- as.matrix(x)
+  x <- as.matrix(x)
 
-    if (!is.matrix(x) | !is.numeric(x)) {
-      warning('argument "x" must be convertable to a numeric matrix')
-    } else if (nrow(x) < 2 | ncol(x) < 2) {
-      # change_factor will divide by zero if r = 1 or c = 1
-      warning('argument "x" must have at least 2 rows and columns')
-    } else if (!is.numeric(c(A_r, B_r, A_m, B_m))) {
-      warning('arguments "A" and "B" must be single numeric values')
-    } else if (length(c(A_r, B_r, A_m, B_m)) != 4) {
-      warning('arguments "A" and "B" must be single numeric values')
-    } else if (anyNA(c(A_r, B_r, A_m, B_m))) {
-      warning('arguments "A" and "B" must be single numeric values')
-    } else {
-      # Initialize
-      A <- A_r
-      B <- B_r
+  if (!is.matrix(x) | !is.numeric(x)) {
+    warning('argument "x" must be convertable to a numeric matrix')
+  } else if (nrow(x) < 2 | ncol(x) < 2) {
+    # change_factor will divide by zero if r = 1 or c = 1
+    warning('argument "x" must have at least 2 rows and columns')
+  } else if (!is.numeric(c(A_r, B_r, A_m, B_m))) {
+    warning('arguments "A" and "B" must be single numeric values')
+  } else if (length(c(A_r, B_r, A_m, B_m)) != 4) {
+    warning('arguments "A" and "B" must be single numeric values')
+  } else if (anyNA(c(A_r, B_r, A_m, B_m))) {
+    warning('arguments "A" and "B" must be single numeric values')
+  } else {
+    # Initialize
+    r <- nrow(x)
+    c <- ncol(x)
+    n <- r * c
 
-      r <- nrow(x)
-      c <- ncol(x)
-      n <- r * c
+    # this will be used in step a3, but only need to calc once
+    change_factor <- r * c / ((r - 1) * (c - 1))
 
-      # this will be used in step a6, but only need to calc once
-      change_factor <- r * c / ((r - 1) * (c - 1))
+    # this data frame makes it easy to track all values
+    # j and k are the rows and columns of the table
+    dat <- data.frame(
+      x = as.vector(x),
+      j = ifelse(1:n %% r == 0, r, 1:n %% r),
+      k = ceiling(1:n / r),
+      change_type = 0
+    )
 
-      # this will be used to calc y_split and z_split
-      middle_third <- (floor(n / 3) + 1):ceiling(2 * n / 3)
+    ###########
+    ## FUNOR ##
+    ###########
+    #repeat {
+    for (ctr in 1:n) { # don't repeat for more members than are in dataset
+      dat <- dat %>%
+        dplyr::select(x, j, k, change_type) # this removes the calculated values from last loop
 
-      # this data frame makes it easy to track all values
-      # j and k are the rows and columns of the table
-      dat <- data.frame(
-        x = as.vector(as.matrix(x)),
-        j = ifelse(1:n %% r == 0, r, 1:n %% r),
-        k = ceiling(1:n / r),
-        change_type = 0
-      )
+      # (a1)
+      # Fit row and column means to the original observations
+      # and form the residuals
+      # calculate the row means
+      dat <- dat %>%
+        dplyr::group_by(j) %>%
+        dplyr::summarise(j_mean = mean(x)) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(j, j_mean) %>%
+        dplyr::inner_join(dat, by = 'j')
 
-      ################
-      ## start loop ##
-      ################
+      # calculate the column means
+      dat <- dat %>%
+        dplyr::group_by(k) %>%
+        dplyr::summarise(k_mean = mean(x)) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(k, k_mean) %>%
+        dplyr::inner_join(dat, by = 'k')
 
-      repeat {
-        dat <- dat %>%
-          dplyr::select(x, j, k, change_type) # this removes the calculated values from last loop
+      grand_mean <- mean(dat$x)
 
-        # (a1)
-        # calculate the row means
-        dat <- dat %>%
-          dplyr::group_by(j) %>%
-          dplyr::summarise(j_mean = mean(x)) %>%
-          dplyr::ungroup() %>%
-          dplyr::select(j, j_mean) %>%
-          dplyr::inner_join(dat, by = 'j')
+      # calculate the residuals
+      dat$y <- dat$x - dat$j_mean - dat$k_mean + grand_mean
 
-        # calculate the column means
-        dat <- dat %>%
-          dplyr::group_by(k) %>%
-          dplyr::summarise(k_mean = mean(x)) %>%
-          dplyr::ungroup() %>%
-          dplyr::select(k, k_mean) %>%
-          dplyr::inner_join(dat, by = 'k')
+      # put dat in order based upon y (which will match i in FUNOP)
+      dat <- dat %>%
+        dplyr::arrange(y) %>%
+        dplyr::mutate(i = dplyr::row_number())
 
-        grand_mean <- mean(dat$x)
+      # (a2)
+      # apply FUNOP to the residuals
+      funop_residuals <- funop(dat$y, A_r, B_r)
 
-        # calculate the residuals
-        dat$y <- dat$x - dat$j_mean - dat$k_mean + grand_mean
-
-        # (a2)
-        # reimplement FUNOP, simply because I'll need z and a for step a3
-        # and other values for FUNOM
-        # FUNOP (b2)
-        # sort the data
-        dat <- dat %>%
-          dplyr::arrange(y) %>%
-          dplyr::mutate(i = dplyr::row_number())
-
-        dat$middle_third <- ifelse(dat$i %in% middle_third, T, F)
-
-        y_split <- dat %>%
-          # use middle_third to calculate y_trimmed only
-          #filter(middle_third == TRUE) %>%
-          dplyr::summarize(median(y)) %>%
-          as.numeric()
-
-        # (b3)
-        dat$a <- a_qnorm(dat$i, n)
-        dat$z <- (dat$y - y_split) / dat$a
-
-        # (b4)
-        z_split <- dat %>%
-          dplyr::filter(middle_third == FALSE) %>%
-          dplyr::summarize(z_split = median(z)) %>%
-          as.numeric()
-
-        # (b5)
-        # extreme B
-        extreme_B <- B * z_split
-        dat <- dat %>%
-          dplyr::mutate(interesting_values = ((middle_third == FALSE) &
-                                                (z > extreme_B)))
-
-        # (b5*)
-        # find actuals as extreme--or greater--than identified extreme_values
-        if (sum(dat$interesting_values > 0)) {
-          max_low_x <- dat %>%
-            dplyr::filter(interesting_values) %>%
-            dplyr::filter(x < y_split) %>%
-            dplyr::summarise(max_low_x = max(x)) %>%
-            as.numeric()
-
-          dat$interesting_values <-
-            ifelse(dat$x <= max_low_x, TRUE, dat$interesting_values)
-
-          min_high_x <- dat %>%
-            dplyr::filter(interesting_values) %>%
-            dplyr::filter(x > y_split) %>%
-            dplyr::summarise(min_high_x = min(x)) %>%
-            as.numeric()
-
-          dat$interesting_values <-
-            ifelse(dat$x >= min_high_x, TRUE, dat$interesting_values)
-        }
-
-        # extreme A
-        extreme_A <- A * z_split
-        dat$interesting_values <-
-          ifelse(dat$interesting_values &
-                   (abs(dat$x - y_split) >= extreme_A), TRUE, FALSE)
-
-        if (sum(dat$interesting_values) == 0) {
-          break
-        }
-
-        # (a3)
-        # FUNOR
-        big_y <- dat %>%
-          dplyr::filter(interesting_values == TRUE) %>%
-          dplyr::top_n(1, (abs(y)))
-
-        # change x by an amount that's proportional to its
-        # position in the distribution (a)
-        # here's why it's important that z be on same scale as the raw value
-        delta_x <- big_y$z * big_y$a * change_factor
-        dat$x[which(dat$i == big_y$i)] <- big_y$x - delta_x
-        dat$change_type[which(dat$i == big_y$i)] <- 1
-
+      # (a4)
+      # repeat until no y_{jk} deserves special attention
+      if (!any(funop_residuals$special)) {
+        break
       }
 
+      # (a3) modify x_{jk} for largest y_{jk} that deserves special attention
+      big_y <- funop_residuals %>%
+        dplyr::filter(special == TRUE) %>%
+        dplyr::top_n(1, (abs(y)))
 
-      # FUNOM
-      # (a5)
-      # extreme B
-      extreme_B <- B_m * z_split
-      dat <- dat %>%
-        dplyr::mutate(interesting_values = ((middle_third == FALSE) &
-                                              (z >= extreme_B)))
+      # change x by an amount that's proportional to its
+      # position in the distribution (a)
+      # here's why it's useful to have z be on same scale as the raw value
+      delta_x <- big_y$z * big_y$a * change_factor
+      dat$x[which(dat$i == big_y$i)] <- big_y$y - delta_x
+      dat$change_type[which(dat$i == big_y$i)] <- 1
 
-      # extreme A
-      extreme_A <- A_m * z_split
-      dat$interesting_values <-
-        ifelse(dat$interesting_values &
-                 (abs(dat$x - y_split) >= extreme_A), TRUE, FALSE)
-
-      # (a6)
-      # adjust interesting values
-      delta_x <- dat %>%
-        dplyr::filter(interesting_values == TRUE) %>%
-        dplyr::mutate(change_type = 2) %>%
-        dplyr::mutate(delta_x = (z - extreme_B) * a) %>%
-        dplyr::mutate(new_x = x - delta_x) %>%
-        dplyr::select(-x,-delta_x) %>%
-        dplyr::rename(x = new_x)
-
-      # select undistinguied values and recombine with adjusted values
-      dat <- dat %>%
-        dplyr::filter(interesting_values == FALSE) %>%
-        dplyr::bind_rows(delta_x)
-
-      #dat
-
-      # reshape result into a table of original size
-      dat <- dat %>%
-        dplyr::select(j, k, x) %>%
-        dplyr::arrange(j, k)
-
-      matrix(dat$x, nrow = r, byrow = TRUE)
+      #dat[which(dat$i == big_y$i), c('j', 'k')]
+      #attr(funop_residuals, 'y_split')
+      #attr(funop_residuals, 'z_split')
+      #delta_x
 
     }
 
+    # Done with FUNOR. To apply subsequent modifications we need
+    # the following from the most recent FUNOP
+    dat <- funop_residuals %>%
+      dplyr::select(i, middle, a, z) %>%
+      dplyr::inner_join(dat, by = 'i')
+
+    z_split <- attr(funop_residuals, 'z_split')
+    y_split <- attr(funop_residuals, 'y_split')
+
+
+    ###########
+    ## FUNOM ##
+    ###########
+    # (a5)
+    # identify new interesting values based upon new A & B
+    # start with threshold for extreme B
+    extreme_B <- B_m * z_split
+    dat <- dat %>%
+      dplyr::mutate(interesting_values = ((middle == FALSE) &
+                                            (z >= extreme_B)))
+
+    # logical AND with threshold for extreme A
+    extreme_A <- A_m * z_split
+    dat$interesting_values <-
+      ifelse(dat$interesting_values &
+               (abs(dat$y - y_split) >= extreme_A), TRUE, FALSE)
+
+    # (a6)
+    # adjust just the interesting values
+    delta_x <- dat %>%
+      dplyr::filter(interesting_values == TRUE) %>%
+      dplyr::mutate(change_type = 2) %>%
+      dplyr::mutate(delta_x = (z - extreme_B) * a) %>%
+      dplyr::mutate(new_x = x - delta_x) %>%
+      dplyr::select(-x, -delta_x) %>%
+      dplyr::rename(x = new_x)
+
+    # select undistinguied values from dat and recombine with
+    # adjusted versions of the interesting values
+    dat <- dat %>%
+      dplyr::filter(interesting_values == FALSE) %>%
+      dplyr::bind_rows(delta_x)
+
+    # return data to original shape
+    dat <- dat %>%
+      dplyr::select(j, k, x, change_type) %>%
+      dplyr::arrange(j, k)
+
+    # reshape result into a table of the original shape
+    matrix(dat$x, nrow = r, byrow = TRUE)
   }
+}
+

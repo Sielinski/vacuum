@@ -24,7 +24,7 @@
 
 a_qnorm <- function(i, n) {
   if (is.numeric(i) & is.numeric(n)) {
-    qnorm((3 * i - 1) / (3 * n + 1))
+    stats::qnorm((3 * i - 1) / (3 * n + 1))
   } else {
     warning('arguments "i" and "n" must be numeric')
   }
