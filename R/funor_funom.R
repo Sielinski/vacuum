@@ -83,6 +83,12 @@ funor_funom <- function(x, A_r = 10, B_r = 1.5, A_m = 0, B_m = 1.5) {
     ## FUNOR ##
     ###########
     #repeat {
+    # Tukey's original definition says to repeat until no more outliers
+    # are found, but in some cases (maybe just very small tables with
+    # little variance) we might end up looping more times than Tukey
+    # intended. Other stopping criteria to consider: No more than j * k
+    # passes, or no more than one change per y_{jk}
+    #
     for (ctr in 1:n) { # don't repeat for more members than are in dataset
       dat <- dat %>%
         dplyr::select(x, j, k, change_type) # this removes the calculated values from last loop

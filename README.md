@@ -29,10 +29,7 @@ library(vacuum)
 dat <-
   c(14, -104, -97, -59, -161, 93, 454, -341, 54, 137, 473, 45, 193, 22)
 
-# index positions of outliers 
+# outliers flagged as TRUE in the special column
 funop(dat)
-
-# values of outliers 
-dat[funop(dat)]
 
 ```
