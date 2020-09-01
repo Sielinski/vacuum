@@ -7,7 +7,7 @@
 #'
 #' The procedure ignores values in the middle third of the \emph{ordered}
 #' vector. The remaining values are all candidates for consideration. The
-#' slopes of all candidates are calculated, and the median of their slopes
+#' slopes of candidate values are calculated, and the median of their slopes
 #' is used as the primary basis for identifying outliers.
 #'
 #' Any value whose slope is \code{B} times larger than the median slope is
@@ -34,6 +34,11 @@
 #' * \code{a}: Result of \code{a_qnorm(i, length(x))}
 #' * \code{z}: Slope of \code{y} relative to \code{median(y)}
 #' * \code{special}: Boolean indicating whether \code{y} is an outlier
+#' Additionally, the data frame will have the following attributes,
+#' which FUNOP calculates as part of its procedure:
+#' * \code{y_split}: Median of the vector
+#' * \code{y_trimmed}: Mean of the top and bottom thirds of the vector
+#' * \code{z_split}: Median slope of candidate values
 #' @seealso [vacuum::a_qnorm()]
 #' @references
 #' Tukey, John W. "The Future of Data Analysis."
