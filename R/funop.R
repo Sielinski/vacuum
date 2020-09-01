@@ -10,11 +10,12 @@
 #' slopes of all candidates are calculated, and the median of their slopes
 #' is used as the primary basis for identifying outliers.
 #'
-#' Values whose slope is \code{B} times larger than the median slope are
-#' identified as outliers. The procedure also identifies as outliers any
-#' values whose magnitude is larger than the identified outliers.
+#' Any value whose slope is \code{B} times larger than the median slope is
+#' identified as an outlier. Additionally, any value whose \emph{magnitude}
+#' is larger than that of the slope-based outliers is also identified as
+#' an outlier.
 #'
-#' However, the procedure will \emph{not} disregard as outliers any values
+#' However, the procedure will \emph{not} identify as outliers any values
 #' within \code{A} standard deviations of the vector's median (i.e., not
 #' the median of candidate slopes).
 #' @param x
@@ -38,7 +39,7 @@
 #' Tukey, John W. "The Future of Data Analysis."
 #' \emph{The Annals of Mathematical Statistics},
 #' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
-#' \url{http://www.jstor.org/stable/2237638}.
+#' \url{https://www.jstor.org/stable/2237638}.
 #' @examples
 #' funop(c(1, 2, 3, 11))
 #' funop(table_1)

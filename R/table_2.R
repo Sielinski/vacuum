@@ -11,7 +11,7 @@
 #' Tukey, John W. "The Future of Data Analysis."
 #' \emph{The Annals of Mathematical Statistics},
 #' \emph{33}(1), 1962, pp 1-67. \emph{JSTOR},
-#' \url{http://www.jstor.org/stable/2237638}.
+#' \url{https://www.jstor.org/stable/2237638}.
 #'
 #' @examples
 #' table_2
