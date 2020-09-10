@@ -34,10 +34,11 @@
 #' * \code{a}: Result of \code{a_qnorm(i, length(x))}
 #' * \code{z}: Slope of \code{y} relative to \code{median(y)}
 #' * \code{special}: Boolean indicating whether \code{y} is an outlier
+#'
 #' Additionally, the data frame will have the following attributes,
 #' which FUNOP calculates as part of its procedure:
 #' * \code{y_split}: Median of the vector
-#' * \code{y_trimmed}: Mean of the top and bottom thirds of the vector
+#' * \code{y_trimmed}: Mean of the top and bottom thirds of the ordered vector
 #' * \code{z_split}: Median slope of candidate values
 #' @seealso [vacuum::a_qnorm()]
 #' @references

@@ -213,16 +213,12 @@ FUNOR-FUNOM is specifically designed to operate on two-way (or contingency) tabl
 The equation below shows how these effects are combined. Because it’s unlikely for expected values to match the table’s actual values exactly, the equation includes a residual term (*y~jk~*) to account for any deviation. 
 
 $$
-
 \begin{align}
-
 (actual \space value) &= (general \space \mathit{effect}) + (row \space \mathit{effect}) + (column \space \mathit{effect}) + (deviation)\\
 x_{jk} &= (x_{..}) + (x_{j.} - x_{..}) + (x_{.k} - x_{..}) + (y_{jk})\\
 &= x_{..} + x_{j.} - x_{..} + x_{.k} - x_{..} + y_{jk}\\
 &= x_{j.} + x_{.k} - x_{..} + y_{jk}
-
 \end{align}
-
 $$
 
 FUNOR-FUNOM is primarily interested in the values that deviate most from their expected values, the ones with the largest residuals. So, to calculate residuals, simply swap the above equation around:
@@ -406,14 +402,14 @@ There are three data sets in this package, which Tukey provided, one for each pr
 
 * **Table 1** contains example data for FUNOP (p 24)
 * **Table 2** is a 36 x 15 two-way table and contains example data for FUNOR-FUNOM (p 26)
-* **Table 8** is a 36 x 15 two-way table and contains example data for the vacuum cleaner (p 54). Note that Tukey's published table contains a typo, which has been corrected in this package. (See note below)
+* **Table 8** is a 36 x 15 two-way table and contains example data for the vacuum cleaner (p 54). Note that Tukey's published table contains a typo, which has been corrected in this package (see below).
 
- "The Future of Data Analysis" contains a handful of errors that can make a detailed investigation of the paper difficult. Below, I've documented what I found in case anyone wants to dig more deeply themselves:
+ "The Future of Data Analysis" contains a handful of errors that can make a detailed investigation of the paper difficult. Below, I've documented the ones that I found in case anyone wants to dig more deeply themselves:
 
 *	One of Tukey's Gaussian calculations contains an arithmetic error: *a*~4|14~ should be Gau^-1^(11/43) (p 23)
 *	As mentioned, one of the values in Table 8 has an inverted sign: the value in row 23, column 10 should be 0.100, not -0.100 (p 54)
-* The numerator for [y/ab], when based up the row coefficent, should be Σ*~r~* *a~r~*[*y/**b***]*~r~* instead of Σ*~r~* *a~r~*[*y/**a***]*~r~* (p 52)
-*	Tukey swaps two values in when he plugs them into a key regression equation: 0.258 and 0.167 (p 55). The equation should read:
+* The numerator for [y/ab], when based upon the row coefficient, should be Σ*~r~* *a~r~*[*y/**b***]*~r~* instead of Σ*~r~*  *a~r~*[*y/**a***]*~r~* (p 52)
+*	Tukey swaps two values when he plugs them into a key regression equation: 0.258 and 0.167 (p 55). The equation should read:
 
 $$
 0.126 - (0.014)(0.167) - (-0.459)(0.258) - (0.921)(0.258)(0.167) \space \doteq \space 0.20

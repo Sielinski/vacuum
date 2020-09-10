@@ -12,7 +12,7 @@ An implementation of three procedures developed by
     Combined, they provide a way to identify, treat, and analyze outliers 
     in two-way (i.e., contingency) tables, as described in his 
     landmark paper "The Future of Data Analysis", Tukey, John W. (1962) 
-    <https://www.jstor.org/stable/2237638>.
+    <doi:10.1214/aoms/1177704711>.
 
 An implementation of three procedures developed by 
     John Tukey: FUNOP (FUll NOrmal Plot), FUNOR-FUNOM 
@@ -20,7 +20,7 @@ An implementation of three procedures developed by
     Combined, they provide a way to identify, treat, and analyze outliers 
     in two-way (i.e., contingency) tables, as described in his 
     landmark paper "The Future of Data Analysis", Tukey, John W. (1962) 
-    <https://www.jstor.org/stable/2237638>.
+    <doi:10.1214/aoms/1177704711>.
 }
 \seealso{
 Useful links:
