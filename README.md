@@ -14,10 +14,16 @@ landmark paper "The Future of Data Analysis", Tukey, John W. (1962)
 
 ## Installation
 
-I'll release this on [CRAN](https://CRAN.R-project.org) once they begin 
-accepting packages again (after their summer hiatus). In the meantime, you can try:
+You can install the released version of vacuum from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
+install.packages("vacuum")
+````
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
 devtools::install_github("sielinski/vacuum")
 ```
 
@@ -32,7 +38,7 @@ library(vacuum)
 dat <-
   c(14, -104, -97, -59, -161, 93, 454, -341, 54, 137, 473, 45, 193, 22)
 
-# outliers flagged as TRUE in the special column
+# outliers flagged as TRUE in the "special" column
 funop(dat)
 
 ```
