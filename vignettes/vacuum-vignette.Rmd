@@ -180,7 +180,7 @@ Our original values are plotted along the *x*-axis. The points in the green make
 
 The points not in green make up the outer thirds (i.e., the top and bottom thirds) of our sample, and we use them to calculate *z̍*, the median slope of just those points, indicated by the black horizontal line.
 
-Our first selection criterion is *z~i~* ≥ *B* · *z̍*. In his example, Tukey sets *B* = 1.5, so our threshold of interest is 1.5*z̍*, indicated by the blue horizontal line. We’ll consider any point above that line (the shaded blue region) to “deserve special attention”. We have only one such point, colored red. 
+Our first selection criterion is *z~i~* ≥ *B* · *z̍*. In his example, Tukey sets *B* = 1.5, so our threshold of interest is 1.5*z̍*, indicated by the blue horizontal line. Any point above that line (the shaded blue region) will “deserve special attention”. We have only one such point, colored red. 
 
 Our second criterion is |*y~i~* – *y̍*| ≥ *A* · *z̍*. In his example, Tukey sets *A* = 0, so our threshold of interest is |*y~i~* – *y̍*| ≥ 0 or (more simply) *y~i~* ≠ *y̍*. Basically, any point not on the green line. Our one point in the shaded blue region isn’t on the green line, so we still have our one point. 
 
@@ -236,7 +236,7 @@ $$
 where
 
 $$
-\Delta x_{jk}=\ z_{jk} \cdot a_{a(n)}\cdot\frac{r\cdot c}{\left(r-1\right)\left(c-1\right)}
+\Delta x_{jk}=\ z_{jk} \cdot a_{i|n}\cdot\frac{r\cdot c}{\left(r-1\right)\left(c-1\right)}
 $$
 
 
