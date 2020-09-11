@@ -2,8 +2,8 @@
 # vacuum <a href='https://github.com/sielinski/vacuum'><img src='man/figures/vacuum_hex.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
-[![CRAN checks](https://cranchecks.info/badges/worst/vacuum)](https://cran.r-project.org/web/checks/check_results_vacuum.html)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/vacuum)](https://cran.r-project.org/package=vacuum)
+[![CRAN checks](https://cranchecks.info/badges/worst/vacuum)](https://cran.r-project.org/web/checks/check_results_vacuum.html)
 <!-- badges: end -->
 
 Vacuum is an implementation in R of three procedures developed by 
@@ -22,7 +22,7 @@ You can install the released version of vacuum from [CRAN](https://CRAN.R-projec
 install.packages("vacuum")
 ````
 
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the development version, which currently contains only changes to the documentation, from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
