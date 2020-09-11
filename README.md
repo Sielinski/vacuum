@@ -1,7 +1,8 @@
 
-# vacuum
+# vacuum <a href='https://github.com/sielinski/vacuum'><img src='man/figures/vacuum_hex.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
+[![CRAN checks](https://cranchecks.info/badges/worst/vacuum)](https://cran.r-project.org/web/checks/check_results_vacuum.html)
 <!-- badges: end -->
 
 Vacuum is an implementation in R of three procedures developed by 
