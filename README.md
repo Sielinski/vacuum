@@ -22,7 +22,7 @@ You can install the released version of vacuum from [CRAN](https://CRAN.R-projec
 install.packages("vacuum")
 ````
 
-You can install the development version, which currently contains only changes to the documentation, from [GitHub](https://github.com/) with:
+You can install the development version, which currently contains only  documentation changes, from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
